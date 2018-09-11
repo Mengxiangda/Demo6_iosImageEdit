@@ -148,7 +148,7 @@ public class MyChildrenView extends View {
     }
 
     private void reDraw(){
-        if (mDrawingList != null) {
+        if (mDrawingList != null && mBufferBitmap != null) {
             mBufferBitmap.eraseColor(Color.TRANSPARENT);
             for (DrawingInfo drawingInfo : mDrawingList) {
                 drawingInfo.draw(mBufferCanvas);

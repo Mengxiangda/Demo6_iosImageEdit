@@ -52,6 +52,12 @@ public class MyParentView extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mHeight = getMeasuredHeight();
         mWidth = getMeasuredWidth();
+
+        if (mTargetView != null) {
+            mWidth = mTargetView.getMeasuredWidth();
+            mHeight = mTargetView.getMeasuredHeight();
+        }
+
     }
 
     @Override
@@ -62,6 +68,9 @@ public class MyParentView extends FrameLayout {
         mSmallScaleY = mTargetView.getScaleY();
         mBigScaleX = mSmallScaleX * 3;
         mBigScaleY = mSmallScaleY * 3;
+
+
+
     }
 
     @Override
@@ -158,15 +167,30 @@ public class MyParentView extends FrameLayout {
                     mTargetView.setTranslationX(limitX);
                 }
             }
-            if (Math.abs(translationY) < limitY) {
-                mTargetView.setTranslationY(translationY + y);
-            } else {
-                if (translationY < 0) {
-                    mTargetView.setTranslationY(-limitY);
+            log("translationY  == > " + translationY);
+            if (translationY > 0) {
+                if (Math.abs(translationY) < limitY) {
+                    mTargetView.setTranslationY(translationY + y);
                 } else {
-                    mTargetView.setTranslationY(limitY);
+                    if (translationY < 0) {
+                        mTargetView.setTranslationY(-limitY);
+                    } else {
+                        mTargetView.setTranslationY(limitY);
+                    }
+                }
+            } else if(translationY < 0) {
+                if (Math.abs(translationY) < (limitY + (mHeight - getMeasuredHeight()))) {
+                    mTargetView.setTranslationY(translationY + y);
+                } else {
+                    if (translationY < 0) {
+                        mTargetView.setTranslationY(-(limitY + (mHeight - getMeasuredHeight())));
+                    } else {
+                        mTargetView.setTranslationY((limitY + (mHeight - getMeasuredHeight())));
+                    }
                 }
             }
+
+
         }
     }
 
